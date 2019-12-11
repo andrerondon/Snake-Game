@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+         body {
+            background-color: rgb(99, 99, 99);
+
+        }
+
+        .canvas_game {
+            background-color: blanchedalmond;
+            box-shadow: 0px 0px 20px 20px coral;
+            margin-top: 3em;
+        }
+
+        html,
+        main {
+            height: 100%;
+            margin: 0;
+        }
+
+        main,
+
+        h1 {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        h1 {
+            color: red;
+        }
+        .button_phone{
+            border-radius: 150px;
+            position: absolute;
+            top:200px;
+            left:200px;
+            height: 200px;
+            width:200px;
+            background-color: blue;
+            display:grid;
+            grid-template-areas:
+            ". up ."
+            "left . right"
+            ". down .";
+        }
+        .up{
+            grid-area:up;
+        }
+        .right{
+            grid-area:right;
+        }
+        .down{
+            grid-area:down;
+        }
+        .left{
+            grid-area:left;
+        }
+        .button_phone > button{
+            font-size:2em;
+            border-radius: 40px;
+        }
+    </style>
+</head>
+<body>
+        <h1>Andre's Snake Game</h1>
+        <div>
+            <div class="speed">
+                <select id="Speed" style='font-size: 15px; font-family: "Bangers", cursive'>
+                    <option value="6">Speed</option>
+                    <option value="0">Fast</option>
+                    <option value="2">Medium</option>
+                    <option value="6">Slow</option>
+                    <option value="16">Turtle</option>
+                </select>
+            </div>
+            <div class="size">
+                <select id="Size" style='font-size: 15px; font-family: "Bangers", cursive'>
+                    <option value="480"> board size</option>
+                    <option value="780">Big Board</option>
+                    <option value="480">Medium Board</option>
+                    <option value="280">Small Board</option>
+                    <option value="180">Tiny Board</option>
+                </select>
+    
+            </div>
+    
+            <div class="snake_color">
+                <select id="SnakeColor" style='font-size: 15px; font-family: "Bangers", cursive' onchange = Scolor>
+                    <option value="Black">Snake Color</option>
+                    <option value="black">Black</option>
+                    <option value="Blue">Blue</option>
+                    <option value="yellow">yellow</option>
+                    <option value="orange">Orange</option>
+                    <option value="pink">Guto</option>
+                    <option value="green">green</option>
+                    <option value="purple">purple</option>
+                    <option value="Red">Red</option>
+    
+                </select>
+            </div>
+    
+            <select id="AppleColor" style='font-size: 15px; font-family: "Bangers", cursive' onchange = Acolor()>
+                <option value="Black">Apple Color</option>
+                <option value="Black">Black</option>
+                <option value="blue">blue</option>
+                <option value="yellow">yellow</option>
+                <option value="orange">Orange</option>
+                <option value="pink">Guto</option>
+                <option value="green">green</option>
+                <option value="purple">purple</option>
+                <option value="red">Red</option>
+            </select>
+        </div>
+    <div class = "button_phone">
+        <button class = "up" onclick = phoneclickUp()>W</button>
+        <button class = "right" onclick = phoneclickRight()>D</button>
+        <button class = "down" onclick = phoneclickDown()>S</button>
+        <button class = "left" onclick = phoneclickLeft()>A</button>
+    </div>
+
+    <main>
+            <canvas class="canvas_game" width="400" height="400" id="game" style="border: 1px solid rgb(0, 0, 0);"></canvas>
+            <script>
+                let canvas = document.getElementById('game');
+    
+                let context = canvas.getContext('2d');
+    
+    
+                const grid = 16;
+    
+                let count = 0;
+    
+                let snake = {
+    
+                    x: 160,
+                    y: 160,
+                    dx: grid,
+                    dy: 0,
+                    cells: [],
+                    maxCells: 1
+                }
+    
+                let apple = {
+                    x: 160,
+                    y: 160
+                }
+    
+                let userSpeed = 10;
+    
+                //function to selecte the speed by the user
+    
+                // function selectorSpeed(a) {
+                //     userSpeed = a.value;  
+                // }
+    
+                Speed.onchange = function (e) {
+                    userSpeed = e.target.value
+                }
+    
+                Size.onchange = function (e) {
+                    canvas.width = e.target.value;
+                    canvas.height = e.target.value;
+                }
+    
+    
+    
+                function getRandomInt(min, max) {
+                    return Math.floor(Math.random() * (max - min)) + min;
+                };
+    
+                function loop() {
+    
+                    requestAnimationFrame(loop);
+    
+                    if (++count < userSpeed) {
+                        return;
+                    }
+                    count = 0;
+    
+                    context.clearRect(0, 0, canvas.width, canvas.height);
+    
+                    snake.x += snake.dx;
+                    snake.y += snake.dy;
+    
+                    if (snake.x < 0) {
+    
+                        snake.x = canvas.width;
+                    } else if (snake.x >= canvas.width) {
+    
+                        snake.x = 0;
+                    };
+    
+                    if (snake.y < 0) {
+    
+                        snake.y = canvas.height;
+                    } else if (snake.y >= canvas.height) {
+    
+                        snake.y = 0;
+                    };
+    
+                    snake.cells.unshift({
+                        x: snake.x,
+                        y: snake.y
+                    });
+    
+                    if (snake.cells.length > snake.maxCells) {
+                        snake.cells.pop();
+                    }
+    
+    
+                    const Acolor = function () {
+                        context.fillStyle = AppleColor.value
+                    }
+                    Acolor();
+    
+                    context.fillRect(apple.x, apple.y, grid, grid);
+    
+    
+    
+                    const Scolor = function () {
+                        context.fillStyle = SnakeColor.value
+                    }
+                    Scolor();
+
+
+    
+                    snake.cells.forEach(function (cell, index) {
+    
+                        context.fillRect(cell.x, cell.y, grid, grid);
+    
+                        if (apple.x === snake.x && apple.y === snake.y) {
+    
+                            snake.maxCells++;
+    
+                            apple.x = getRandomInt(0, (canvas.width / 16)) * grid;
+                            apple.y = getRandomInt(0, (canvas.width / 16)) * grid;
+                        }
+                        for (var i = index + 1; i < snake.cells.length; i++) {
+                            if (cell.x === snake.cells[i].x && cell.y === snake.cells[i].y) {
+                                snake.x = 160;
+                                snake.y = 160;
+                                snake.cells = [];
+                                snake.maxCells = 1;
+                                snake.dx = grid;
+                                snake.dy = 0;
+                                apple.x = 176;
+                                apple.y = 176;
+                            }
+                        }
+                    });
+                }
+    
+                document.addEventListener('', function (e) {
+                    if (e.which === 37 && snake.dx === 0 || e.which === 65 && snake.dx === 0) {
+                        snake.dx = -grid;
+                        snake.dy = 0;
+                    } else if (e.which === 38 && snake.dy === 0 || e.which === 87 && snake.dy === 0) {
+                        snake.dx = 0;
+                        snake.dy = -grid;
+                    } else if (e.which === 39 && snake.dx === 0 || e.which === 68 && snake.dx === 0) {
+                        snake.dx = grid;
+                        snake.dy = 0;
+                    } else if (e.which === 40 && snake.dy === 0 || e.which === 83 && snake.dy === 0) {
+                        snake.dx = 0;
+                        snake.dy = grid;
+                    }
+                });
+
+                function  phoneclickUp (){
+                        snake.dx = 0;
+                        snake.dy = -grid;
+
+                    }
+
+                    function  phoneclickRight (){
+                        snake.dx = grid;
+                        snake.dy = 0;
+
+                    }
+
+                    function  phoneclickDown (){
+                        snake.dx = 0;
+                        snake.dy = grid;
+
+                    }
+
+                    function  phoneclickLeft (){
+                        snake.dx = -grid;
+                        snake.dy = 0;
+
+                    }
+    
+                requestAnimationFrame(loop);
+            </script>
+        </main>
+</body>
+</html>
