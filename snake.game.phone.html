@@ -14,13 +14,22 @@
         .canvas_game {
             background-color: blanchedalmond;
             box-shadow: 0px 0px 20px 20px coral;
-            margin-top: 3em;
+            position: fixed;
+            margin-top: 30%;
         }
 
         html,
         main {
             height: 100%;
             margin: 0;
+        }
+        .dropdown_menus {
+            display:flex;
+            justify-content: space-evenly;
+        }
+        .input_menus {
+            display: flex;
+            justify-content: center;
         }
 
         main,
@@ -37,8 +46,8 @@
         .button_phone{
             border-radius: 150px;
             position: absolute;
-            top:200px;
-            left:200px;
+            top:70%;
+            left:45%;
             height: 200px;
             width:200px;
             background-color: blue;
@@ -68,8 +77,8 @@
 </head>
 <body>
         <h1>Andre's Snake Game</h1>
-        <div>
-            <div class="speed">
+        <div class="dropdown_menus">
+            <!-- <div class="speed"> -->
                 <select id="Speed" style='font-size: 15px; font-family: "Bangers", cursive'>
                     <option value="6">Speed</option>
                     <option value="0">Fast</option>
@@ -77,8 +86,8 @@
                     <option value="6">Slow</option>
                     <option value="16">Turtle</option>
                 </select>
-            </div>
-            <div class="size">
+            <!-- </div> -->
+            <!-- <div class="size"> -->
                 <select id="Size" style='font-size: 15px; font-family: "Bangers", cursive'>
                     <option value="480"> board size</option>
                     <option value="780">Big Board</option>
@@ -87,9 +96,9 @@
                     <option value="180">Tiny Board</option>
                 </select>
     
-            </div>
+            <!-- </div> -->
     
-            <div class="snake_color">
+            <!-- <div class="snake_color"> -->
                 <select id="SnakeColor" style='font-size: 15px; font-family: "Bangers", cursive' onchange = Scolor>
                     <option value="Black">Snake Color</option>
                     <option value="black">Black</option>
@@ -102,7 +111,7 @@
                     <option value="Red">Red</option>
     
                 </select>
-            </div>
+            <!-- </div> -->
     
             <select id="AppleColor" style='font-size: 15px; font-family: "Bangers", cursive' onchange = Acolor()>
                 <option value="Black">Apple Color</option>
@@ -115,13 +124,18 @@
                 <option value="purple">purple</option>
                 <option value="red">Red</option>
             </select>
+
         </div>
-    <div class = "button_phone">
-        <button class = "up" onclick = phoneclickUp()>W</button>
-        <button class = "right" onclick = phoneclickRight()>D</button>
-        <button class = "down" onclick = phoneclickDown()>S</button>
-        <button class = "left" onclick = phoneclickLeft()>A</button>
-    </div>
+        <div class="input_menus">
+                <input id = "bgColor" type="text" placeholder="Background Color">    
+                <input id = "Color" type="submit" value ="Change Color" >      
+        </div>
+        <div class = "button_phone">
+            <button class = "up" onclick = phoneclickUp()>W</button>
+            <button class = "right" onclick = phoneclickRight()>D</button>
+            <button class = "down" onclick = phoneclickDown()>S</button>
+            <button class = "left" onclick = phoneclickLeft()>A</button>
+        </div>
 
     <main>
             <canvas class="canvas_game" width="400" height="400" id="game" style="border: 1px solid rgb(0, 0, 0);"></canvas>
@@ -165,6 +179,9 @@
                 Size.onchange = function (e) {
                     canvas.width = e.target.value;
                     canvas.height = e.target.value;
+                }
+                Color.onclick = function () {
+                canvas.style.backgroundColor = bgColor.value;
                 }
     
     
